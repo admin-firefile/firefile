@@ -1,4 +1,5 @@
 import { GoSidebarCollapse } from "react-icons/go";
+import NavbarContext from "./NavbarContext";
 
 export default function Navbar() {
   return (
@@ -11,7 +12,7 @@ export default function Navbar() {
         {/* Sidebar toggle icon */}
         <GoSidebarCollapse />
       </label>
-      <div className='px-4'>FireFile</div>
+      <NavbarContext />
     </nav>
   );
 }

@@ -1,5 +1,11 @@
-import { FaUsers, FaFire, FaWrench, FaFileAlt } from "react-icons/fa";
-import { RxAvatar } from "react-icons/rx";
+import {
+  FaUsers,
+  FaFire,
+  FaWrench,
+  FaFileAlt,
+  FaUserCog,
+} from "react-icons/fa";
+import { MdAccountCircle } from "react-icons/md";
 import Link from "next/link";
 
 export default function Sidebar() {
@@ -66,7 +72,7 @@ export default function Sidebar() {
               className='is-drawer-close:tooltip is-drawer-close:tooltip-right'
               data-tip='Account'
             >
-              <RxAvatar className='w-4 h-4 my-1.5' />
+              <FaUserCog className='w-4 h-4 my-1.5' />
               <span className='is-drawer-close:hidden'>Account</span>
             </Link>
           </li>

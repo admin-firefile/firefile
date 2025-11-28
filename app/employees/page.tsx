@@ -1,3 +1,9 @@
+import EmployeesTable from "@/lib/components/EmployeesTable";
+
 export default function Employees() {
-  return <div>Employees</div>;
+  return (
+    <div>
+      <EmployeesTable />
+    </div>
+  );
 }
