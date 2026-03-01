@@ -1,3 +1,9 @@
+import EquipmentTable from "@/lib/components/EquipmentTable";
+
 export default function Equipment() {
-  return <div>Equipment</div>;
+  return (
+    <div>
+      <EquipmentTable />
+    </div>
+  );
 }

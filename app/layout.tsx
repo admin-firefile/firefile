@@ -2,6 +2,8 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/lib/components/Navbar";
 import Sidebar from "@/lib/components/Sidebat";
+import AddEmployeeModal from "@/lib/modals/AddEmployeeModal";
+import AddEquipmentModal from "@/lib/modals/AddEquipmentModal";
 import { cookies } from "next/headers";
 
 const inter = Inter({ subsets: ["latin"], display: "swap" });
@@ -25,14 +27,22 @@ export default async function RootLayout({
     <html lang="en" data-theme="firefile">
       <body className={`${inter.className} antialiased`}>
         {authenticated ? (
-          <div className="drawer lg:drawer-open">
-            <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
-            <div className="drawer-content">
-              <Navbar />
-              <div className="p-4">{children}</div>
+          <>
+            <AddEmployeeModal />
+            <AddEquipmentModal />
+            <div className="drawer lg:drawer-open">
+              <input
+                id="my-drawer-4"
+                type="checkbox"
+                className="drawer-toggle"
+              />
+              <div className="drawer-content">
+                <Navbar />
+                <div className="p-4">{children}</div>
+              </div>
+              <Sidebar />
             </div>
-            <Sidebar />
-          </div>
+          </>
         ) : (
           children
         )}

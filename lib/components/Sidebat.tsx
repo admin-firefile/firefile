@@ -16,10 +16,23 @@ export default function Sidebar() {
   const router = useRouter();
 
   const handleLogout = () => {
+    closeDrawerOnMobile();
     document.cookie = "authToken=; path=/; max-age=0";
     clearUser();
     router.replace("/login");
     router.refresh();
+  };
+
+  const closeDrawerOnMobile = () => {
+    if (window.innerWidth < 1024) {
+      // lg breakpoint
+      const drawerCheckbox = document.getElementById(
+        "my-drawer-4",
+      ) as HTMLInputElement;
+      if (drawerCheckbox) {
+        drawerCheckbox.checked = false;
+      }
+    }
   };
 
   return (
@@ -38,6 +51,7 @@ export default function Sidebar() {
               href={"/employees"}
               className="is-drawer-close:tooltip is-drawer-close:tooltip-right "
               data-tip="Employees"
+              onClick={closeDrawerOnMobile}
             >
               {/* Home icon */}
               <FaUsers className="w-4 h-4 my-1.5" />
@@ -51,6 +65,7 @@ export default function Sidebar() {
               href={"/crews"}
               className="is-drawer-close:tooltip is-drawer-close:tooltip-right "
               data-tip="Crews"
+              onClick={closeDrawerOnMobile}
             >
               <FaFire className="w-4 h-4 my-1.5" />
               <span className="is-drawer-close:hidden">Crews</span>
@@ -62,6 +77,7 @@ export default function Sidebar() {
               href={"/equipment"}
               className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
               data-tip="Equipment"
+              onClick={closeDrawerOnMobile}
             >
               <FaWrench className="w-4 h-4 my-1.5" />
               <span className="is-drawer-close:hidden">Equipment</span>
@@ -73,6 +89,7 @@ export default function Sidebar() {
               href={"/manifest"}
               className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
               data-tip="Manifest"
+              onClick={closeDrawerOnMobile}
             >
               <FaFileAlt className="w-4 h-4 my-1.5" />
               <span className="is-drawer-close:hidden">Manifest</span>
@@ -84,6 +101,7 @@ export default function Sidebar() {
               href={"/account"}
               className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
               data-tip="Account"
+              onClick={closeDrawerOnMobile}
             >
               <FaUserCog className="w-4 h-4 my-1.5" />
               <span className="is-drawer-close:hidden">Account</span>

@@ -1,38 +1,81 @@
+"use client";
+import { useState, useEffect } from "react";
+import axios from "axios";
+import { useUserStore } from "@/lib/store/user";
+
+interface Employee {
+  id: string;
+  name: string;
+  job: string;
+  notes?: string;
+  user_id: number;
+}
+
 export default function EmployeesTable() {
+  const [employees, setEmployees] = useState<Employee[]>([]);
+  const [loading, setLoading] = useState(true);
+  const user = useUserStore((state) => state.user);
+
+  const fetchEmployees = async () => {
+    if (!user?.token) return;
+    try {
+      const response = await axios.get("http://127.0.0.1:3001/employees", {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      });
+      setEmployees(response.data);
+    } catch (error) {
+      console.error("Error fetching employees:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchEmployees();
+  }, [user?.token]);
+
+  useEffect(() => {
+    const handleEmployeeAdded = () => {
+      fetchEmployees();
+    };
+
+    window.addEventListener("employeeAdded", handleEmployeeAdded);
+
+    return () => {
+      window.removeEventListener("employeeAdded", handleEmployeeAdded);
+    };
+  }, []);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
   return (
-    <div className='overflow-x-auto'>
-      <table className='table'>
+    <div className="overflow-x-auto">
+      <table className="table">
         {/* head */}
         <thead>
           <tr>
             <th></th>
             <th>Name</th>
             <th>Job</th>
-            <th>Favorite Color</th>
+            <th>Notes</th>
           </tr>
         </thead>
         <tbody>
-          {/* row 1 */}
-          <tr className='bg-base-200'>
-            <th>1</th>
-            <td>Cy Ganderton</td>
-            <td>Quality Control Specialist</td>
-            <td>Blue</td>
-          </tr>
-          {/* row 2 */}
-          <tr>
-            <th>2</th>
-            <td>Hart Hagerty</td>
-            <td>Desktop Support Technician</td>
-            <td>Purple</td>
-          </tr>
-          {/* row 3 */}
-          <tr>
-            <th>3</th>
-            <td>Brice Swyre</td>
-            <td>Tax Accountant</td>
-            <td>Red</td>
-          </tr>
+          {employees.map((employee, index) => (
+            <tr
+              key={employee.id}
+              className={index % 2 === 0 ? "bg-base-200" : ""}
+            >
+              <th>{index + 1}</th>
+              <td>{employee.name}</td>
+              <td>{employee.job}</td>
+              <td>{employee.notes || ""}</td>
+            </tr>
+          ))}
         </tbody>
       </table>
     </div>

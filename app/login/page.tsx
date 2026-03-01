@@ -7,10 +7,12 @@ import { useRouter } from "next/navigation";
 export default function Login() {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
+  const [error, setError] = useState("");
   const setUser = useUserStore((state) => state.setUser);
   const router = useRouter();
 
   async function login() {
+    setError("");
     axios
       .post("http://127.0.0.1:3001/login", { email, password })
       .then((res) => {
@@ -20,6 +22,13 @@ export default function Login() {
           document.cookie = `authToken=${token}; path=/; max-age=86400`;
           router.replace("/");
           router.refresh();
+        }
+      })
+      .catch((err) => {
+        if (err.response && err.response.status === 401) {
+          setError(err.response.data.error);
+        } else {
+          setError("An error occurred. Please try again.");
         }
       });
   }
@@ -55,13 +64,12 @@ export default function Login() {
           </div>
 
           <div className="form-control mt-4">
-            <button
-              className="btn btn-primary w-full text-red-500"
-              onClick={login}
-            >
+            <button className="btn btn-primary w-full" onClick={login}>
               Login
             </button>
           </div>
+
+          {error && <div className="text-red-500 mt-4">{error}</div>}
         </div>
       </div>
     </div>
